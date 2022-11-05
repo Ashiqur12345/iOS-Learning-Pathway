@@ -7,26 +7,37 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojies = ["⚽️", "🏀", "🏈", "⚾️", "🥎", "🎾", "🏐", "🏉", "🥏", "🎱", "🪀", "🏓", "🏸", "🏒", "🏑", "🥍", "🏏", "🪃", "🥅", "⛳️", "🪁", "🛝", "🏹", "🎣", "🤿", "🥊", "🥋", "🎽", "🛹", "🛼", "🛷", "⛸", "🥌", "🎿", "⛷", "🏂"]
-    @State var emojiCount = 3
+    var emojies = ["⚽️", "🏀", "🏈", "⚾️", "🥎", "🎾", "🏐", "🏉", "🥏", "🎱", "🪀", "🏓", "🏸", "🏒", "🏑", "🥍", "🏏", "🪃", "🥅", "⛳️", "🪁", "🛝", "🏹", "🎣", "🤿", "🥊", "🥋", "🎽", "🛹", "🛼", "🛷", "⛸", "🥌", "🎿"]
+    @State var emojiCount = 34
     var body: some View {
         VStack{
             HStack{
-                ForEach(emojies[0..<emojiCount], id: \.self, content: { em in
-                    CardView(text: em)
-                })
+                ScrollView{
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))]){
+                        ForEach(emojies[0..<emojiCount], id: \.self, content: { em in
+                            CardView(text: em).aspectRatio(2/3, contentMode: .fit)
+                        })
+                    }
+                }
             }.foregroundColor(.green)
             Spacer()
             HStack{
                 Button {
                     emojiCount = min(emojiCount+1, emojies.count)
-                } label: {Image(systemName:"plus.circle").imageScale(.large)}
+                } label:{LargeEmojiImage(imageName: "plus.circle")}
                 Spacer()
                 Button{
                     emojiCount = max(emojiCount-1, 1)
-                } label: {Image(systemName:"minus.circle").imageScale(.large)}
+                } label: {LargeEmojiImage(imageName: "minus.circle")}
             }.padding(.horizontal).font(.largeTitle)
         }.padding(.horizontal)
+    }
+}
+
+struct LargeEmojiImage: View{
+    let imageName: String
+    var body: some View{
+        Image(systemName:imageName).imageScale(.large)
     }
 }
 
@@ -38,7 +49,7 @@ struct CardView: View{
             let shape = RoundedRectangle(cornerRadius: 10)
             if(isFaceUp){
                 shape
-                shape.stroke(lineWidth:5).foregroundColor(.green)
+                shape.strokeBorder(lineWidth:5).foregroundColor(.green)
                 Text(text)
                     .font(.title)
                     .multilineTextAlignment(.center)
@@ -55,6 +66,6 @@ struct CardView: View{
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().preferredColorScheme(.light)
-//        ContentView().preferredColorScheme(.dark)
+        ContentView().previewInterfaceOrientation(.landscapeLeft)
     }
 }
