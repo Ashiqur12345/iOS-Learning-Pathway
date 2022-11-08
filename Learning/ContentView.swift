@@ -8,7 +8,7 @@ import SwiftUI
 
 struct ContentView: View {
     var emojies = ["⚽️", "🏀", "🏈", "⚾️", "🥎", "🎾", "🏐", "🏉", "🥏", "🎱", "🪀", "🏓", "🏸", "🏒", "🏑", "🥍", "🏏", "🪃", "🥅", "⛳️", "🪁", "🛝", "🏹", "🎣", "🤿", "🥊", "🥋", "🎽", "🛹", "🛼", "🛷", "⛸", "🥌", "🎿"]
-    @State var emojiCount = 34
+    @State var emojiCount = 30
     var body: some View {
         VStack{
             HStack{
