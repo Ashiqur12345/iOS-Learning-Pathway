@@ -60,24 +60,16 @@ struct AssignMent1: View {
     }
 }
 
-
-struct AssignMent1LargeEmojiImage: View{
-    let imageName: String
-    var body: some View{
-        Image(systemName:imageName).imageScale(.large)
-    }
-}
-
 struct AssignMent1CardView: View{
     let text : String
     @State var isFaceUp = false
     var body: some View{
         ZStack{
-            let shape = RoundedRectangle(cornerRadius: 10)
+            let shape = RoundedRectangle(cornerRadius: 20)
             if(isFaceUp){
                 shape
                 shape.strokeBorder(lineWidth:5).foregroundColor(.green)
-                Text(text).font(.title)
+                Text(text).font(.title).padding(.vertical)
             }
             else{
                 shape.fill(.orange)
