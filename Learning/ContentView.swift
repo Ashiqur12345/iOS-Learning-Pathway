@@ -7,30 +7,22 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojies = ["⚽️", "🏀", "🏈", "⚾️", "🥎", "🎾", "🏐", "🏉", "🥏", "🎱", "🪀", "🏓", "🏸", "🏒", "🏑", "🥍", "🏏", "🪃", "🥅", "⛳️", "🪁", "🛝", "🏹", "🎣", "🤿", "🥊", "🥋", "🎽", "🛹", "🛼", "🛷", "⛸", "🥌", "🎿"]
-    @State var emojiCount = 30
+
+    @ObservedObject var viewModel: CardGameEmoji
+    
     var body: some View {
-        VStack{
-            HStack{
-                ScrollView{
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))]){
-                        ForEach(emojies[0..<emojiCount], id: \.self, content: { em in
-                            CardView(text: em).aspectRatio(2/3, contentMode: .fit)
-                        })
+            ScrollView(){
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 93))], alignment: .leading){
+                    ForEach(viewModel.cards) { card in
+                        CardView(card: card).aspectRatio(2/3, contentMode: .fit)
+                            .onTapGesture {
+                                viewModel.choose(card)
+                            }
                     }
                 }
-            }.foregroundColor(.green)
-            Spacer()
-            HStack{
-                Button {
-                    emojiCount = min(emojiCount+1, emojies.count)
-                } label:{LargeEmojiImage(imageName: "plus.circle")}
-                Spacer()
-                Button{
-                    emojiCount = max(emojiCount-1, 1)
-                } label: {LargeEmojiImage(imageName: "minus.circle")}
-            }.padding(.horizontal).font(.largeTitle)
-        }.padding(.horizontal)
+            }
+            .foregroundColor(.green)
+            .padding(.horizontal)
     }
 }
 
@@ -42,30 +34,28 @@ struct LargeEmojiImage: View{
 }
 
 struct CardView: View{
-    let text : String
-    @State var isFaceUp = false
+
+    let card: CardGame<String>.Card
     var body: some View{
         ZStack{
             let shape = RoundedRectangle(cornerRadius: 10)
-            if(isFaceUp){
+                
+            if(card.isFaceUp){
                 shape
-                shape.strokeBorder(lineWidth:5).foregroundColor(.green)
-                Text(text)
-                    .font(.title)
-                    .multilineTextAlignment(.center)
+                shape.strokeBorder(lineWidth:5).foregroundColor(.brown)
+                Text(card.content).font(.title).padding(.vertical)
             }
             else{
                 shape.fill(.orange)
             }
-        }.onTapGesture{
-            isFaceUp = !isFaceUp
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().preferredColorScheme(.light)
-        ContentView().previewInterfaceOrientation(.landscapeLeft)
+        let viewModel: CardGameEmoji = CardGameEmoji()
+        ContentView(viewModel: viewModel).preferredColorScheme(.light)
+        ContentView(viewModel: viewModel).previewInterfaceOrientation(.landscapeLeft)
     }
 }

@@ -12,6 +12,8 @@
 		8BBC29C928EA799E0068BADB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC29C828EA799E0068BADB /* ContentView.swift */; };
 		8BBC29CB28EA79A00068BADB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8BBC29CA28EA79A00068BADB /* Assets.xcassets */; };
 		8BBC29CE28EA79A00068BADB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8BBC29CD28EA79A00068BADB /* Preview Assets.xcassets */; };
+		8BED0C3A292F394B00565C26 /* CardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BED0C39292F394B00565C26 /* CardGame.swift */; };
+		8BED0C3C292F396B00565C26 /* CardGameEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BED0C3B292F396B00565C26 /* CardGameEmoji.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,8 @@
 		8BBC29C828EA799E0068BADB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8BBC29CA28EA79A00068BADB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8BBC29CD28EA79A00068BADB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		8BED0C39292F394B00565C26 /* CardGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGame.swift; sourceTree = "<group>"; };
+		8BED0C3B292F396B00565C26 /* CardGameEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGameEmoji.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,7 @@
 		8BBC29C528EA799E0068BADB /* Learning */ = {
 			isa = PBXGroup;
 			children = (
+				8BED0C36292F38F500565C26 /* CardGame */,
 				8BA6EF6D2918C86F00805DFB /* AssignMent1.swift */,
 				8BBC29C628EA799E0068BADB /* LearningApp.swift */,
 				8BBC29C828EA799E0068BADB /* ContentView.swift */,
@@ -68,6 +73,15 @@
 				8BBC29CD28EA79A00068BADB /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8BED0C36292F38F500565C26 /* CardGame */ = {
+			isa = PBXGroup;
+			children = (
+				8BED0C39292F394B00565C26 /* CardGame.swift */,
+				8BED0C3B292F396B00565C26 /* CardGameEmoji.swift */,
+			);
+			path = CardGame;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,7 +155,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BBC29C928EA799E0068BADB /* ContentView.swift in Sources */,
+				8BED0C3A292F394B00565C26 /* CardGame.swift in Sources */,
 				8BA6EF6E2918C86F00805DFB /* AssignMent1.swift in Sources */,
+				8BED0C3C292F396B00565C26 /* CardGameEmoji.swift in Sources */,
 				8BBC29C728EA799E0068BADB /* LearningApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
