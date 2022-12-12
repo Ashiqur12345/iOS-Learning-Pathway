@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct ContentView: View {
+struct CardGameEmojiView: View {
 
     @ObservedObject var viewModel: CardGameEmoji
     
@@ -14,21 +14,9 @@ struct ContentView: View {
         
         ZStack(alignment: .center){
             
-            ScrollView(){
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 93))]){
-                    ForEach(viewModel.cards) { card in
-                        CardView(card: card).aspectRatio(2/3, contentMode: .fit)
-                        .onTapGesture {
-                            viewModel.choose(card)
-                        }
-                    }
-                }
-            }
-            .foregroundColor(.green)
-            
             if(viewModel.isGameWon){
                 VStack{
-                    Text("You Win").font(.largeTitle).bold().foregroundColor(.green)
+                    Text("You Win").font(.largeTitle).bold()
                     Button(action: {
                         viewModel.playAgain()
                     })
@@ -36,12 +24,26 @@ struct ContentView: View {
                         Image(systemName:"arrow.clockwise.circle")
                             .font(.title)
                             .imageScale(.large)
-                            .foregroundColor(.green)
+                    }
+                }
+            }
+            else{
+                VStack{
+                    Text(viewModel.name).font(.title)
+                    ScrollView(){
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 93))]){
+                            ForEach(viewModel.cards) { card in
+                                CardView(card: card).aspectRatio(2/3, contentMode: .fit)
+                                .onTapGesture {
+                                    viewModel.choose(card)
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-        .padding(.horizontal)
+        .padding(.horizontal).foregroundColor(viewModel.color)
         
     }
 }
@@ -53,16 +55,16 @@ struct CardView: View{
         ZStack{
             let shape = RoundedRectangle(cornerRadius: 10)
             
-            if(card.isMatched){
-                shape.opacity(0)
-            }
-            else if(card.isFaceUp){
+            if(card.isFaceUp){
                 shape
                 shape.strokeBorder(lineWidth:5).foregroundColor(.brown)
                 Text(card.content).font(.title).padding(.vertical)
             }
+            else if(card.isMatched){
+                shape.opacity(0)
+            }
             else{
-                shape.fill(.orange)
+                shape.fill(.gray)
             }
         }
     }
@@ -71,7 +73,7 @@ struct CardView: View{
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel: CardGameEmoji = CardGameEmoji()
-        ContentView(viewModel: viewModel).preferredColorScheme(.light)
-        ContentView(viewModel: viewModel).previewInterfaceOrientation(.landscapeLeft)
+        CardGameEmojiView(viewModel: viewModel).preferredColorScheme(.light)
+        CardGameEmojiView(viewModel: viewModel).previewInterfaceOrientation(.landscapeLeft)
     }
 }

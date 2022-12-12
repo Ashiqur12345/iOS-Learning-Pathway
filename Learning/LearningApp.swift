@@ -12,7 +12,7 @@ struct LearningApp: App {
     var body: some Scene {
         WindowGroup {
             let viewModel: CardGameEmoji = CardGameEmoji()
-            ContentView(viewModel: viewModel)
+            CardGameEmojiView(viewModel: viewModel)
         }
     }
 }
