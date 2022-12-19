@@ -52,21 +52,36 @@ struct CardView: View{
 
     let card: CardGame<String>.Card
     var body: some View{
-        ZStack{
-            let shape = RoundedRectangle(cornerRadius: 10)
+        GeometryReader{ geometry in
             
-            if(card.isFaceUp){
-                shape
-                shape.strokeBorder(lineWidth:5).foregroundColor(.brown)
-                Text(card.content).font(.title).padding(.vertical)
-            }
-            else if(card.isMatched){
-                shape.opacity(0)
-            }
-            else{
-                shape.fill(.gray)
+            ZStack{
+                let shape = RoundedRectangle(cornerRadius: DrawingConstants.cornerRadius)
+                
+                if(card.isFaceUp){
+                    shape
+                    shape.strokeBorder(lineWidth:DrawingConstants.lineWidth).foregroundColor(.brown)
+                    Text(card.content).font(sizedFont(min(geometry.size.height, geometry.size.width)))
+                        
+                        .padding(.vertical)
+                }
+                else if(card.isMatched){
+                    shape.opacity(0)
+                }
+                else{
+                    shape.fill(.gray)
+                }
             }
         }
+    }
+    
+    private func sizedFont(_ size: CGFloat) -> Font{
+        Font.system(size: size * DrawingConstants.fontSizeScalar)
+    }
+    
+    struct DrawingConstants{
+        static let cornerRadius     : CGFloat = 10
+        static let lineWidth        : CGFloat = 3
+        static let fontSizeScalar   : CGFloat = 0.7
     }
 }
 

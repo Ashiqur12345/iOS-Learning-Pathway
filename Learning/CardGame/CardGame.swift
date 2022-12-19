@@ -60,8 +60,8 @@ struct CardGame<CardContent> where CardContent: Equatable{
     }
     
     struct Card: Identifiable{
-        var isMatched : Bool = false
-        var isFaceUp : Bool = false
+        var isMatched = false
+        var isFaceUp = true
         var content: CardContent
         var id: Int
     }
