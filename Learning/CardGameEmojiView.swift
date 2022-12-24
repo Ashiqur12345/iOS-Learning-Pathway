@@ -58,6 +58,7 @@ struct CardView: View{
                 
                 if(card.isFaceUp){
                     shape
+                    Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 320-90)).fill(.yellow).opacity(0.5)
                     shape.strokeBorder(lineWidth:DrawingConstants.lineWidth).foregroundColor(.brown)
                     Text(card.content).font(sizedFont(min(geometry.size.height, geometry.size.width)))
                         
@@ -86,8 +87,9 @@ struct CardView: View{
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel: CardGameEmoji = CardGameEmoji()
-        CardGameEmojiView(viewModel: viewModel).preferredColorScheme(.light)
-        CardGameEmojiView(viewModel: viewModel).previewInterfaceOrientation(.landscapeLeft)
+        var viewModel: CardGameEmoji = CardGameEmoji()
+        viewModel.choose(viewModel.cards.first!)
+        return CardGameEmojiView(viewModel: viewModel).preferredColorScheme(.light)
+//        CardGameEmojiView(viewModel: viewModel).previewInterfaceOrientation(.landscapeLeft)
     }
 }

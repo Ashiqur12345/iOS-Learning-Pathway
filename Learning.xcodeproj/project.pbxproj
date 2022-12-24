@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8B5B5A3629578C5200164980 /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B5A3529578C5200164980 /* AspectVGrid.swift */; };
+		8B5B5A382957A0E800164980 /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5B5A372957A0E800164980 /* Pie.swift */; };
 		8BA6EF6E2918C86F00805DFB /* AssignMent1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6EF6D2918C86F00805DFB /* AssignMent1.swift */; };
 		8BBC29C728EA799E0068BADB /* LearningApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC29C628EA799E0068BADB /* LearningApp.swift */; };
 		8BBC29C928EA799E0068BADB /* CardGameEmojiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC29C828EA799E0068BADB /* CardGameEmojiView.swift */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		8B5B5A3529578C5200164980 /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
+		8B5B5A372957A0E800164980 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 		8BA6EF6D2918C86F00805DFB /* AssignMent1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignMent1.swift; sourceTree = "<group>"; };
 		8BBC29C328EA799E0068BADB /* Learning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Learning.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BBC29C628EA799E0068BADB /* LearningApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningApp.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				8B5B5A3529578C5200164980 /* AspectVGrid.swift */,
 				8BBC29CA28EA79A00068BADB /* Assets.xcassets */,
 				8BBC29CC28EA79A00068BADB /* Preview Content */,
+				8B5B5A372957A0E800164980 /* Pie.swift */,
 			);
 			path = Learning;
 			sourceTree = "<group>";
@@ -161,6 +164,7 @@
 				8BED0C3A292F394B00565C26 /* CardGame.swift in Sources */,
 				8B5B5A3629578C5200164980 /* AspectVGrid.swift in Sources */,
 				8BA6EF6E2918C86F00805DFB /* AssignMent1.swift in Sources */,
+				8B5B5A382957A0E800164980 /* Pie.swift in Sources */,
 				8BED0C3C292F396B00565C26 /* CardGameEmoji.swift in Sources */,
 				8BBC29C728EA799E0068BADB /* LearningApp.swift in Sources */,
 			);
