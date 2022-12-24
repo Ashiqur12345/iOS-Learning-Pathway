@@ -28,16 +28,15 @@ struct CardGameEmojiView: View {
                 }
             }
             else{
-                VStack{
-                    Text(viewModel.name).font(.title)
-                    ScrollView(){
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 93))]){
-                            ForEach(viewModel.cards) { card in
-                                CardView(card: card).aspectRatio(2/3, contentMode: .fit)
-                                .onTapGesture {
-                                    viewModel.choose(card)
-                                }
-                            }
+                AspectVGrid(items: viewModel.cards, aspectRatio: 2/3){ card in
+                    if(card.isMatched && !card.isFaceUp){
+                        Rectangle().opacity(0)
+                    }
+                    else{
+                        CardView(card: card)
+                            .padding(5)
+                            .onTapGesture {
+                            viewModel.choose(card)
                         }
                     }
                 }
