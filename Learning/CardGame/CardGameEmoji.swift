@@ -18,31 +18,31 @@ class CardGameEmoji: ObservableObject {
         Theme(
             name: "Sporty",
             emojies: ["⚽️", "🏀", "🏈", "⚾️", "🥎", "🎾", "🏐", "🏉", "🥏", "🎱"],
-            noOfPairsToShow: 3,
             color: Colors.Orange
         ),
         Theme(
             name: "Alive",
             emojies: ["🐧", "🐔", "🐤", "🐒", "🦉", "🐢", "🦞", "🪲", "🐝", "🦋", "🐛", "🐞", "🕷", "🐅", "🐫", "🦏", "🦒", "🐄", "🦌", "🐈", "🦩", "🦜"],
-            noOfPairsToShow: 15,
             color: Colors.Brown
         ),
         Theme(
             name: "Fresh",
             emojies: ["🌵", "🎄", "🌲", "🌳", "🌴", "🌱", "🌿", "☘️", "🍀", "🍃", "🎋", "🪴", "🎍", "🍂", "🍁", "💐", "🌷", "🌹", "🌺", "🌸", "🌻", "🌼", "🥀", "🪷"],
-            noOfPairsToShow: 15,
             color: Colors.Green
         ),
     ]
     private static var selectedTheme: Theme = themes[0]
+    private static var setStartIndex = 0
+    private var noOfSets = 2
+    private var noOfCardsInSet = 3
     
     @Published private var model : CardGame<String>
 
     init() {
-        model = CardGame<String>(noOfPairs: CardGameEmoji.selectedTheme.noOfPairsToShow)
-            { pairIndex in
-                CardGameEmoji.selectedTheme.emojies[pairIndex]
-            }
+        CardGameEmoji.setStartIndex = Int.random(in: 0..<CardGameEmoji.selectedTheme.emojies.count - noOfSets)
+        model = CardGame<String>(noOfSets: noOfSets, noOfCardsInSet: 2) {
+            CardGameEmoji.selectedTheme.emojies[CardGameEmoji.setStartIndex + $0]
+        }
     }
     
     var cards : Array<Card>{
@@ -70,25 +70,23 @@ class CardGameEmoji: ObservableObject {
     }
     func playAgain() {
         CardGameEmoji.selectedTheme = CardGameEmoji.themes[Int.random(in: CardGameEmoji.themes.indices)]
-        model = CardGame<String>(noOfPairs: myMin(CardGameEmoji.selectedTheme.noOfPairsToShow, b: CardGameEmoji.selectedTheme.emojies.count) )
-            { pairIndex in
-                CardGameEmoji.selectedTheme.emojies[pairIndex]
-            }
+        
+        noOfSets = myMin(noOfSets+1, CardGameEmoji.selectedTheme.emojies.count)
+        noOfCardsInSet = Int.random(in: 2...4)
+        
+        CardGameEmoji.setStartIndex = Int.random(in: 0..<CardGameEmoji.selectedTheme.emojies.count - noOfSets)
+        model = CardGame<String>(noOfSets: noOfSets, noOfCardsInSet: noOfCardsInSet) {
+            CardGameEmoji.selectedTheme.emojies[CardGameEmoji.setStartIndex + $0]
+        }
     }
-    
-    
     
     struct Theme{
         let name : String
         let emojies: [String]
-        var noOfPairsToShow : Int
         let color : Colors
     }
-    
-    func myMin (_ a: Int, b: Int) -> Int {
-        if a > b {
-            return b
-        }
-        return a
-    }
+}
+
+func myMin (_ a: Int, _ b: Int) -> Int {
+    return a > b ? b : a
 }

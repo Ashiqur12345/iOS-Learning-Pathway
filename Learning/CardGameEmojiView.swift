@@ -17,18 +17,19 @@ struct CardGameEmojiView: View {
             if(viewModel.isGameWon){
                 VStack{
                     Text("You Win").font(.largeTitle).bold()
+                    Divider()
                     Button(action: {
                         viewModel.playAgain()
                     })
                     {
-                        Image(systemName:"arrow.clockwise.circle")
+                        Image(systemName:"play")
                             .font(.title)
                             .imageScale(.large)
                     }
                 }
             }
             else{
-                AspectVGrid(items: viewModel.cards, aspectRatio: 2/3){ card in
+                AspectVGrid(items: viewModel.cards, aspectRatio: 1){ card in
                     if(card.isMatched && !card.isFaceUp){
                         Rectangle().opacity(0)
                     }
@@ -61,8 +62,6 @@ struct CardView: View{
                     Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 320-90)).fill(.yellow).opacity(0.5)
                     shape.strokeBorder(lineWidth:DrawingConstants.lineWidth).foregroundColor(.brown)
                     Text(card.content).font(sizedFont(min(geometry.size.height, geometry.size.width)))
-                        
-                        .padding(.vertical)
                 }
                 else if(card.isMatched){
                     shape.opacity(0)
@@ -87,8 +86,8 @@ struct CardView: View{
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        var viewModel: CardGameEmoji = CardGameEmoji()
-        viewModel.choose(viewModel.cards.first!)
+        let viewModel: CardGameEmoji = CardGameEmoji()
+//        viewModel.choose(viewModel.cards.first!)
         return CardGameEmojiView(viewModel: viewModel).preferredColorScheme(.light)
 //        CardGameEmojiView(viewModel: viewModel).previewInterfaceOrientation(.landscapeLeft)
     }

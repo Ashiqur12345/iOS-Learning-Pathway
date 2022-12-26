@@ -11,21 +11,23 @@ import Foundation
 struct CardGame<CardContent> where CardContent: Equatable{
     
     private(set) var cards : Array<CardGame.Card>
-    private var theOneAndOnlyFaceupCardIndex: Int?{
-        get{ cards.indices.filter({cards[$0].isFaceUp}).oneAndOnly }
-        set{
-            cards.indices.forEach({cards[$0].isFaceUp = $0 == newValue})
-        }
+    private(set) var noOfCardsInSet : Int = 2
+    
+    private var cardContentBeingMatched: CardContent?
+    private var faceupCardIndices: [Int]{
+        get{ cards.indices.filter({cards[$0].isFaceUp}) }
     }
     
-    init(noOfPairs: Int, cardContentMaker : (Int)->CardContent) {
+    init(noOfSets: Int, noOfCardsInSet: Int, cardContentMaker : (Int)->CardContent) {
         
         cards = Array<Card>()
-        
-        for pairIndex in 0..<noOfPairs
+        self.noOfCardsInSet = noOfCardsInSet
+        for setIndex in 0..<noOfSets
         {
-            cards.append(Card(content: cardContentMaker(pairIndex), id: pairIndex*2))
-            cards.append(Card(content: cardContentMaker(pairIndex), id: pairIndex*2 + 1))
+            for i in 0..<noOfCardsInSet
+            {
+                cards.append(Card(content: cardContentMaker(setIndex), id: setIndex*noOfCardsInSet + i))
+            }
         }
         cards.shuffle()
     }
@@ -36,17 +38,32 @@ struct CardGame<CardContent> where CardContent: Equatable{
            !cards[chosenIndex].isFaceUp,
            !cards[chosenIndex].isMatched
         {
-            if let otherIndex = theOneAndOnlyFaceupCardIndex{
-                if(cards[chosenIndex].content == cards[otherIndex].content){
-                    cards[chosenIndex].isMatched = true
-                    cards[otherIndex].isMatched = true
+            if let content = cardContentBeingMatched {
+                if cards[chosenIndex].content == content {
+                    if faceupCardIndices.count == noOfCardsInSet - 1{
+                        cardContentBeingMatched = nil
+                        for faceupIndex in faceupCardIndices{
+                            cards[faceupIndex].isMatched = true
+                        }
+                        cards[chosenIndex].isMatched = true
+                    }
                 }
-                cards[chosenIndex].isFaceUp = true
+                else{
+                    cardContentBeingMatched = nil
+                    for faceupIndex in faceupCardIndices
+                    {
+                        cards[faceupIndex].isFaceUp = false
+                    }
+                }
             }
             else{
-                theOneAndOnlyFaceupCardIndex = chosenIndex
+                cardContentBeingMatched = cards[chosenIndex].content
+                for index in faceupCardIndices
+                {
+                    cards[index].isFaceUp = false
+                }
             }
-            
+            cards[chosenIndex].isFaceUp = true
         }
     }
     
@@ -62,18 +79,7 @@ struct CardGame<CardContent> where CardContent: Equatable{
     struct Card: Identifiable{
         var isMatched = false
         var isFaceUp = false
-        var content: CardContent
-        var id: Int
-    }
-}
-
-extension Array{
-    var oneAndOnly : Element?{
-        if self.count == 1 {
-            return self.first
-        }
-        else {
-            return nil
-        }
+        let content: CardContent
+        let id: Int
     }
 }
