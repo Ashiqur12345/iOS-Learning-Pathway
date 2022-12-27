@@ -81,11 +81,11 @@ struct CardView: View{
                     shape.strokeBorder(lineWidth:DrawingConstants.lineWidth).foregroundColor(.brown)
                     Text(card.content).font(sizedFont(min(geometry.size.height, geometry.size.width)))
                 }
-                else if(card.isMatched){
-                    shape.opacity(0)
-                }
                 else{
                     shape.fill(.gray)
+                    if(!card.isAlreadySeen && !card.isFaceUp){
+                        Text("🎁").font(.title)
+                    }
                 }
             }
         }
