@@ -12,15 +12,21 @@ struct CardGame<CardContent> where CardContent: Equatable{
     
     private(set) var cards : Array<CardGame.Card>
     private(set) var noOfCardsInSet : Int = 2
+    private(set) var score : Int
+    private(set) var maxAchievableScore : Int
     
-    private var cardContentBeingMatched: CardContent?
-    private var faceupCardIndices: [Int]{
+    private var faceupCardContent: CardContent?{
+        get{ cards.first(where: {$0.isFaceUp && !$0.isMatched})?.content }
+    }
+    private var unmatchedFaceupCardIndices: [Int]{
         get{ cards.indices.filter({cards[$0].isFaceUp}) }
     }
     
     init(noOfSets: Int, noOfCardsInSet: Int, cardContentMaker : (Int)->CardContent) {
         
         cards = Array<Card>()
+        score = 0
+        maxAchievableScore = noOfSets * noOfCardsInSet
         self.noOfCardsInSet = noOfCardsInSet
         for setIndex in 0..<noOfSets
         {
@@ -38,27 +44,33 @@ struct CardGame<CardContent> where CardContent: Equatable{
            !cards[chosenIndex].isFaceUp,
            !cards[chosenIndex].isMatched
         {
-            if let content = cardContentBeingMatched {
+            
+            
+            if let content = faceupCardContent {
                 if cards[chosenIndex].content == content {
-                    if faceupCardIndices.count == noOfCardsInSet - 1{
-                        cardContentBeingMatched = nil
-                        for faceupIndex in faceupCardIndices{
+                    if unmatchedFaceupCardIndices.count == noOfCardsInSet - 1{
+                        for faceupIndex in unmatchedFaceupCardIndices{
                             cards[faceupIndex].isMatched = true
                         }
                         cards[chosenIndex].isMatched = true
+                        score += noOfCardsInSet
                     }
                 }
                 else{
-                    cardContentBeingMatched = nil
-                    for faceupIndex in faceupCardIndices
+                    for faceupIndex in unmatchedFaceupCardIndices
                     {
                         cards[faceupIndex].isFaceUp = false
+                        if cards[faceupIndex].isAlreadySeen{
+                            score -= 1
+                        }
+                        else{
+                            cards[faceupIndex].isAlreadySeen = true
+                        }
                     }
                 }
             }
             else{
-                cardContentBeingMatched = cards[chosenIndex].content
-                for index in faceupCardIndices
+                for index in unmatchedFaceupCardIndices
                 {
                     cards[index].isFaceUp = false
                 }
@@ -79,6 +91,7 @@ struct CardGame<CardContent> where CardContent: Equatable{
     struct Card: Identifiable{
         var isMatched = false
         var isFaceUp = false
+        var isAlreadySeen = false
         let content: CardContent
         let id: Int
     }

@@ -40,7 +40,7 @@ class CardGameEmoji: ObservableObject {
 
     init() {
         CardGameEmoji.setStartIndex = Int.random(in: 0..<CardGameEmoji.selectedTheme.emojies.count - noOfSets)
-        model = CardGame<String>(noOfSets: noOfSets, noOfCardsInSet: 2) {
+        model = CardGame<String>(noOfSets: noOfSets, noOfCardsInSet: noOfCardsInSet) {
             CardGameEmoji.selectedTheme.emojies[CardGameEmoji.setStartIndex + $0]
         }
     }
@@ -52,9 +52,23 @@ class CardGameEmoji: ObservableObject {
     var isGameWon : Bool{
         return model.isGameWon()
     }
+    
+    var cardsInSet : Int{
+        return noOfCardsInSet
+    }
+    
+    var score : Int{
+        return model.score
+    }
+    
+    var maxAchievableScore : Int{
+        return model.maxAchievableScore
+    }
+    
     var name : String{
         return CardGameEmoji.selectedTheme.name
     }
+    
     var color : Color{
         switch CardGameEmoji.selectedTheme.color
         {
@@ -68,6 +82,7 @@ class CardGameEmoji: ObservableObject {
     func choose(_ card: Card) -> Void {
         model.choose(card)
     }
+    
     func playAgain() {
         CardGameEmoji.selectedTheme = CardGameEmoji.themes[Int.random(in: CardGameEmoji.themes.indices)]
         

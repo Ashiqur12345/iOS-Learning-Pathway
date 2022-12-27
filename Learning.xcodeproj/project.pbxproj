@@ -66,9 +66,9 @@
 				8BBC29C628EA799E0068BADB /* LearningApp.swift */,
 				8BBC29C828EA799E0068BADB /* CardGameEmojiView.swift */,
 				8B5B5A3529578C5200164980 /* AspectVGrid.swift */,
+				8B5B5A372957A0E800164980 /* Pie.swift */,
 				8BBC29CA28EA79A00068BADB /* Assets.xcassets */,
 				8BBC29CC28EA79A00068BADB /* Preview Content */,
-				8B5B5A372957A0E800164980 /* Pie.swift */,
 			);
 			path = Learning;
 			sourceTree = "<group>";

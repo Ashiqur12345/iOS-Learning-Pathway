@@ -16,7 +16,10 @@ struct CardGameEmojiView: View {
             
             if(viewModel.isGameWon){
                 VStack{
-                    Text("You Win").font(.largeTitle).bold()
+                    HStack{
+                        Text("Your Score ").font(.title)
+                        Text("\(viewModel.score)").font(.title).bold()
+                    }
                     Divider()
                     Button(action: {
                         viewModel.playAgain()
@@ -29,15 +32,30 @@ struct CardGameEmojiView: View {
                 }
             }
             else{
-                AspectVGrid(items: viewModel.cards, aspectRatio: 1){ card in
-                    if(card.isMatched && !card.isFaceUp){
-                        Rectangle().opacity(0)
+                VStack{
+                    HStack{
+                        Text("Set of ").font(.title)
+                        Text("\(viewModel.cardsInSet)").font(.title).bold()
+                        Text(" cards").font(.title)
                     }
-                    else{
-                        CardView(card: card)
-                            .padding(5)
-                            .onTapGesture {
-                            viewModel.choose(card)
+                    HStack{
+                        Text("Max Achievable Score ").font(.title)
+                        Text("\(viewModel.maxAchievableScore)").font(.title).bold()
+                    }
+                    HStack{
+                        Text("Your Score ").font(.title)
+                        Text("\(viewModel.score)").font(.title).bold()
+                    }
+                    AspectVGrid(items: viewModel.cards, aspectRatio: 1){ card in
+                        if(card.isMatched && !card.isFaceUp){
+                            Rectangle().opacity(0)
+                        }
+                        else{
+                            CardView(card: card)
+                                .padding(5)
+                                .onTapGesture {
+                                viewModel.choose(card)
+                            }
                         }
                     }
                 }
