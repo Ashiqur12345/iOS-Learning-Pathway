@@ -35,6 +35,10 @@ struct CardGame<CardContent> where CardContent: Equatable{
                 cards.append(Card(content: cardContentMaker(setIndex), id: setIndex*noOfCardsInSet + i))
             }
         }
+        shuffle()
+    }
+    
+    mutating func shuffle() -> Void {
         cards.shuffle()
     }
     

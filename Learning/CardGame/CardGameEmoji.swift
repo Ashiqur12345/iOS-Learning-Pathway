@@ -83,6 +83,10 @@ class CardGameEmoji: ObservableObject {
         model.choose(card)
     }
     
+    func shuffle() -> Void {
+        model.shuffle()
+    }
+    
     func playAgain() {
         CardGameEmoji.selectedTheme = CardGameEmoji.themes[Int.random(in: CardGameEmoji.themes.indices)]
         
