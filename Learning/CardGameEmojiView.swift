@@ -19,9 +19,9 @@ struct CardGameEmojiView: View {
                 CardView(card: card)
                     .padding(5)
                     .onTapGesture {
-                        withAnimation{
+                        //withAnimation{
                             viewModel.choose(card)
-                        }
+                        //}
                     }
             }
         }
@@ -52,7 +52,9 @@ struct CardGameEmojiView: View {
             }.padding(.vertical)
             
             Button(action: {
-                viewModel.playAgain()
+                //withAnimation{
+                    viewModel.playAgain()
+                //}
             })
             {
                 Image(systemName:"play")
@@ -74,9 +76,9 @@ struct CardGameEmojiView: View {
                     gameInfo()
                     cards
                     Button(action: {
-                        withAnimation{
+                        //withAnimation{
                             viewModel.shuffle()
-                        }
+                        //}
                     }){
                         Text("Shuffle").font(.title)
                     }
@@ -95,7 +97,11 @@ struct CardView: View{
             ZStack{
                 ZStack{
                     Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 320-90)).fill(.yellow).opacity(0.5)
-                    Text(card.content).font(sizedFont(min(geometry.size.height, geometry.size.width)))
+                    Text(card.content)
+                        .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                        .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false))
+                        .font(sizedFont(min(geometry.size.height, geometry.size.width)))
+                    
                 }.cardify(isFaceUp: card.isFaceUp)
                 
                 if(!card.isAlreadySeen && !card.isFaceUp){

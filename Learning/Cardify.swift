@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct Cardify: AnimatableModifier {
+struct Cardify: ViewModifier {
     var isFaceUp: Bool
+    
+    
     
     func body(content: Content) -> some View {
         let shape = RoundedRectangle(cornerRadius: DrawingConstants.cornerRadius)
@@ -16,11 +18,12 @@ struct Cardify: AnimatableModifier {
         if(isFaceUp){
             shape
             shape.strokeBorder(lineWidth:DrawingConstants.lineWidth).foregroundColor(.brown)
-            content
         }
         else{
             shape.fill(.gray)
         }
+        
+        content.opacity(isFaceUp ? 1 : 0)
     }
     
     struct DrawingConstants{
