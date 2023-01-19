@@ -19,16 +19,16 @@ struct CardGameEmojiView: View {
                 CardView(card: card)
                     .padding(5)
                     .onTapGesture {
-                        //withAnimation{
+                        withAnimation(.easeInOut){
                             viewModel.choose(card)
-                        //}
+                        }
                     }
             }
         }
     }
     
     @ViewBuilder
-    private func gameInfo()-> some View{
+    private var gameInfo: some View{
         HStack{
             Text("Set of ").font(.title)
             Text("\(viewModel.cardsInSet)").font(.title).bold()
@@ -52,15 +52,23 @@ struct CardGameEmojiView: View {
             }.padding(.vertical)
             
             Button(action: {
-                //withAnimation{
+                withAnimation(.spring(blendDuration: 5)){
                     viewModel.playAgain()
-                //}
+                }
             })
             {
                 Image(systemName:"play")
                     .font(.title)
-                    .imageScale(.large)
             }
+        }
+    }
+    private var shuffle : some View{
+        Button(action: {
+            withAnimation(.easeInOut(duration: 1)){
+                viewModel.shuffle()
+            }
+        }){
+            Text("Shuffle").font(.title)
         }
     }
     
@@ -73,15 +81,9 @@ struct CardGameEmojiView: View {
             }
             else{
                 VStack{
-                    gameInfo()
+                    gameInfo
                     cards
-                    Button(action: {
-                        //withAnimation{
-                            viewModel.shuffle()
-                        //}
-                    }){
-                        Text("Shuffle").font(.title)
-                    }
+                    shuffle
                 }
             }
         }
