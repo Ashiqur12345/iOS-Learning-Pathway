@@ -90,10 +90,10 @@ class CardGameEmoji: ObservableObject {
     func playAgain() {
         CardGameEmoji.selectedTheme = CardGameEmoji.themes[Int.random(in: CardGameEmoji.themes.indices)]
         
-        noOfSets = myMin(noOfSets+1, CardGameEmoji.selectedTheme.emojies.count)
+        noOfSets = myMin(noOfSets+1, CardGameEmoji.selectedTheme.emojies.count - 1)
         noOfCardsInSet = Int.random(in: 2...4)
         
-        CardGameEmoji.setStartIndex = Int.random(in: 0..<CardGameEmoji.selectedTheme.emojies.count - noOfSets)
+        CardGameEmoji.setStartIndex = Int.random(in: 0..<(CardGameEmoji.selectedTheme.emojies.count - noOfSets))
         model = CardGame<String>(noOfSets: noOfSets, noOfCardsInSet: noOfCardsInSet) {
             CardGameEmoji.selectedTheme.emojies[CardGameEmoji.setStartIndex + $0]
         }

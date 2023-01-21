@@ -9,21 +9,41 @@ import SwiftUI
 struct CardGameEmojiView: View {
 
     @ObservedObject var viewModel: CardGameEmoji
+    @State var dealt = Set<Int>()
+    @Namespace private var myNameSpace
+    
+    private func isDealt(_ card: CardGameEmoji.Card) -> Bool{
+        dealt.contains(card.id)
+    }
+    private func deal(_ card: CardGameEmoji.Card){
+        dealt.insert(card.id)
+    }
+    private func calcDelay(of card: CardGameEmoji.Card) -> Double{
+        let index = Double(viewModel.cards.firstIndex{$0.id == card.id} ?? 0) * 0.1
+        return Double(index)
+    }
+    private func calcZIndex(of card: CardGameEmoji.Card) -> Double{
+        -Double(viewModel.cards.firstIndex{$0.id == card.id} ?? 0)
+    }
     
     private var cards: some View {
         return AspectVGrid(items: viewModel.cards, aspectRatio: 1){ card in
-            if(card.isMatched && !card.isFaceUp){
+            if(card.isMatched && !card.isFaceUp || !isDealt(card)){
                 Rectangle().opacity(0)
             }
             else{
                 CardView(card: card)
                     .padding(5)
+                    .matchedGeometryEffect(id: card.id, in: myNameSpace)
+                    .zIndex(calcZIndex(of: card))
                     .onTapGesture {
                         withAnimation(.easeInOut){
                             viewModel.choose(card)
                         }
-                    }
+                    }.transition(.asymmetric(insertion: .identity, removal: .scale.animation(.linear)))
             }
+        }.onAppear{
+            
         }
     }
     
@@ -43,7 +63,6 @@ struct CardGameEmojiView: View {
             Text("\(viewModel.score)").font(.title).bold()
         }
     }
-    
     private var gameWon: some View{
         return VStack{
             HStack{
@@ -52,26 +71,46 @@ struct CardGameEmojiView: View {
             }.padding(.vertical)
             
             Button(action: {
-                withAnimation(.spring(blendDuration: 5)){
+                withAnimation(.spring()){
                     viewModel.playAgain()
+                    dealt = []
                 }
             })
             {
                 Image(systemName:"play")
                     .font(.title)
             }
-        }
+        }.transition(.scale.animation(.easeInOut))
     }
     private var shuffle : some View{
         Button(action: {
-            withAnimation(.easeInOut(duration: 1)){
+            withAnimation(.easeInOut){
                 viewModel.shuffle()
             }
         }){
             Text("Shuffle").font(.title)
         }
     }
-    
+    private var deck : some View{
+        ZStack{
+            ForEach(viewModel.cards){ card in
+                if !isDealt(card){
+                    CardView(card: card)
+                        .padding(5)
+                        .matchedGeometryEffect(id: card.id, in: myNameSpace).zIndex(calcZIndex(of: card))
+                        .transition(.asymmetric(insertion: .scale.animation(.linear), removal: .identity))
+                }
+            }
+        }
+        .frame(width: 100, height: 100).transition(.scale.animation(.linear))
+        .onTapGesture{
+            for card in viewModel.cards{
+                withAnimation(.easeInOut.delay(calcDelay(of: card))){
+                    deal(card)
+                }
+            }
+        }
+    }
     var body: some View {
         
         ZStack(alignment: .center){
@@ -80,10 +119,15 @@ struct CardGameEmojiView: View {
                 gameWon
             }
             else{
-                VStack{
-                    gameInfo
-                    cards
-                    shuffle
+                ZStack(alignment: .bottom){
+                    VStack{
+                        gameInfo
+                        cards
+                        if dealt.count >= viewModel.cards.count{
+                            shuffle
+                        }
+                    }
+                    deck
                 }
             }
         }
@@ -101,9 +145,8 @@ struct CardView: View{
                     Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 320-90)).fill(.yellow).opacity(0.5)
                     Text(card.content)
                         .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
-                        .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false))
+//                        .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false))
                         .font(sizedFont(min(geometry.size.height, geometry.size.width)))
-                    
                 }.cardify(isFaceUp: card.isFaceUp)
                 
                 if(!card.isAlreadySeen && !card.isFaceUp){
